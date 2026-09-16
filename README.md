@@ -30,7 +30,7 @@ For a preference pair $(\tau_w, \tau_l)$ diverging at turn $t^*$, the implicit r
 $$
 R_\gamma(\tau) = \beta \sum_{t=0}^{T} \gamma(t) \log \frac{\pi_\theta(a_t \mid h_t)}{\pi_{ref}(a_t \mid h_t)},
 \qquad
-\gamma(t) = \mathbb{I}(t \ge t^*) \cdot \lambda^{\,t - t^*}
+\gamma(t) = \mathbb{I}(t \ge t^*) \cdot \lambda^{t - t^*}
 $$
 
 where identical prefixes contribute zero information and divergent steps decay exponentially from weight 1. Substituting into the Bradley-Terry model yields the H-D²PO loss:
