@@ -9,7 +9,7 @@
 ## Highlights
 
 - **Context Divergence analysis.** We identify the context divergence dilemma in embodied DPO: extending preference optimization to multi-turn trajectories enables long-term credit assignment, but inevitably introduces gradient noise from drifting observation histories. We also observe *local entropy spikes* at the onset of each interaction turn, corroborating that injected environmental observations are a source of optimization noise.
-- **Hierarchical Temporal Decay.** The H-D²PO objective re-weights each step's implicit reward by a decay factor $\gamma(t)=\lambda^{t-t^*}$ relative to the branching point $t^*$, prioritizing the causal branching decision while suppressing noise from the divergent trajectory tail.
+- **Hierarchical Temporal Decay.** The H-D²PO objective re-weights each step's implicit reward by a decay factor $\gamma(t)=\lambda^{t-t^\*}$ relative to the branching point $t^\*$, prioritizing the causal branching decision while suppressing noise from the divergent trajectory tail.
 - **Priority-based Preference Construction.** A data strategy that pairs trajectories under a strict capability hierarchy — Effectiveness ($S \succ F$), Efficiency ($S_S \succ S_L$), and Exploration ($F_L \succ F_S$) — teaching the agent that long failures (deep reasoning before an error) are better than short ones (hallucination / early quit).
 - **State-of-the-art results.** On ALFWorld, our Qwen3-4B agent achieves **89.78%** success rate, surpassing SFT (77.01%), Single-Turn DPO (86.13%), and Multi-Turn DPO (87.23%). Gains are consistent at the 0.6B scale and on LOGICWorld.
 
@@ -25,12 +25,12 @@
 
 ### Hierarchical Temporal Decay Objective
 
-For a preference pair $(\tau_w, \tau_l)$ diverging at turn $t^*$, the implicit reward of vanilla DPO accumulates log-ratios over the entire trajectory, but steps after $t^*$ are conditioned on disparate states — introducing high variance. H-D²PO instead optimizes a **Temporally Decayed Implicit Reward**:
+For a preference pair $(\tau_w, \tau_l)$ diverging at turn $t^\*$, the implicit reward of vanilla DPO accumulates log-ratios over the entire trajectory, but steps after $t^\*$ are conditioned on disparate states — introducing high variance. H-D²PO instead optimizes a **Temporally Decayed Implicit Reward**:
 
 $$
 R_\gamma(\tau) = \beta \sum_{t=0}^{T} \gamma(t) \log \frac{\pi_\theta(a_t \mid h_t)}{\pi_{ref}(a_t \mid h_t)},
 \qquad
-\gamma(t) = \mathbb{I}(t \ge t^*) \cdot \lambda^{t - t^*}
+\gamma(t) = \mathbb{I}(t \ge t^*) \cdot \lambda^{t - t^\*}
 $$
 
 where identical prefixes contribute zero information and divergent steps decay exponentially from weight 1. Substituting into the Bradley-Terry model yields the H-D²PO loss:
