@@ -1,4 +1,4 @@
-# H-D²PO: Mitigating Context Divergence in Multi-Turn Embodied Reasoning via Hierarchical Decay
+# Mitigating Context Divergence in Multi-Turn Embodied Reasoning via Hierarchical Decay
 
 **H-D²PO (Hierarchical Temporal Decay DPO)** is an alignment framework designed specifically for multi-turn embodied reasoning. It addresses a critical challenge when applying DPO to embodied agents: **Context Divergence** — once the chosen and rejected trajectories diverge at a branching step, all subsequent observations and histories drift apart, making naive trajectory-level preference comparison mathematically ill-posed.
 
